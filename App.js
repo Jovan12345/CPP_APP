@@ -19,17 +19,16 @@ const App = () => {
       <StatusBar barStyle="dark-content" />
 
       <NavigationContainer>
-        <Tab.Navigator 
-        initialRouteName="Posts"
-        tabBarOptions={{
-          activeTintColor: 'black',
-          
-          activeBackgroundColor: '#e91e63',
-          labelStyle:{
-            fontSize: 17,
-          },
-
-        }}>
+        <Tab.Navigator
+          initialRouteName="Posts"
+          tabBarOptions={{
+            activeTintColor: 'black',
+            activeBackgroundColor: '#e91e63',
+            labelStyle: {
+              fontSize: 17,
+            },
+          }}
+        >
           <Tab.Screen name="Posts" component={PostsScreen} />
           <Tab.Screen name="Comments" component={CommentsScreen} />
           <Tab.Screen name="Photos" component={PhotosScreen} />

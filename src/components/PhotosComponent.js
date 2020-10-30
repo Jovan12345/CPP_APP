@@ -1,34 +1,27 @@
 import React from 'react'
-import { FlatList, StyleSheet, Text, View, StatusBar, Image } from 'react-native'
+import { FlatList, StyleSheet, Text, View, StatusBar, Image, SectionList } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const PhotosComponent = ({ photos, albums }) => {
 
-    const groupBy = key => array =>
-        array.reduce((objectsByKeyValue, obj) => {
-            const value = obj[key];
-            objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj);
-            return objectsByKeyValue;
-        }, {});
-
-    
-    if (!photos || photos === undefined) {
-        return <Text>Loading</Text>
+    const findTitle = (searchId) => {
+        let findserach = albums.find(idx => idx.id === searchId);
+        return findserach.title
     }
 
-    const groupByAlbumId = groupBy('albumId');
-    const groupPhotosByAlbumId = groupByAlbumId(photos)
-
-    // console.log('update photos component', groupPhotosByAlbumId['1'])
+    const sectionObj = photos.map(value => {
+        let newObj = {};
+        newObj = { 'title': findTitle(value.data[0].albumId), 'data': value.data }
+        return newObj;
+    })
 
     return (
         <SafeAreaView style={styles.safeAreaView}>
             <View>
-                <FlatList
-                    numColumns={3}
-                    data={photos}
-                    keyExtractor={item => item.id}
-                    renderItem={({ item }) => {
+                <SectionList
+                    sections={sectionObj}
+                    keyExtractor={(item, index) => item + index}
+                    renderItem={({item}) => {
                         return (
                             <View style={styles.container}>
                                 <Image
@@ -38,6 +31,9 @@ const PhotosComponent = ({ photos, albums }) => {
                             </View>
                         )
                     }}
+                    renderSectionHeader={({ section: { title } }) => (
+                        <Text>{title}</Text>
+                    )}
                 />
             </View>
         </SafeAreaView>
@@ -50,8 +46,9 @@ const styles = StyleSheet.create({
         marginTop: StatusBar.currentHeight || 0,
     },
     container: {
-        borderTopWidth: 2,
-        borderTopColor: 'grey',
+        flex: 1,
+        flexWrap: 'wrap',
+        backgroundColor: 'red',
     },
     imageStyle: {
         width: 120,

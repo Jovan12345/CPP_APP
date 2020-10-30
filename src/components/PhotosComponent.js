@@ -7,8 +7,11 @@ const PhotosComponent = ({ photos, albums }) => {
         <SafeAreaView style={styles.safeAreaView}>
             <View>
                 <FlatList
+                    numColumns={3}
                     data={photos}
-                    keyExtractor={item => item.id}
+                    keyExtractor={item => item.id.toString()}
+                    style={{}}
+                    contentContainerStyle={{}}
                     renderItem={({ item }) => {
                         return (
                             <View style={styles.container}>
@@ -33,12 +36,10 @@ const styles = StyleSheet.create({
     container: {
         borderTopWidth: 2,
         borderTopColor: 'grey',
-        flexDirection: 'row',
-        flex: 1
     },
     imageStyle: {
-        width: 150,
-        height: 150
+        width: 120,
+        height: 120,
     }
 })
 

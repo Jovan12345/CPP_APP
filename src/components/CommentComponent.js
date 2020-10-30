@@ -8,7 +8,7 @@ const CommentComponent = ({ comments }) => {
             <View>
                 <FlatList
                     data={comments}
-                    keyExtractor={item => item.id}
+                    keyExtractor={item => item.id.toString()}
                     renderItem={({ item }) => {
                         return (
                             <View style={styles.container}>

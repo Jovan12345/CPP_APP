@@ -26,6 +26,7 @@ export interface CommentListProps {
 
 
 export interface Photos{
+    map?(tes:any): any,
     albumId: number,
     id: number,
     title: string,

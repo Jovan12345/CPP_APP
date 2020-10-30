@@ -11,27 +11,41 @@ const PhotosScreen = () => {
     const [photos, setPhotos] = useState<Photos[]>([])
     const [albums, setAlbums] = useState<Album[]>([])
 
+
     useEffect(() => {
         jsonPlaceholder.get<Album[]>('/albums', {
             params: {
-                _limit: 10
+                _limit: 2
             }
         }).then((res) => {
             setAlbums(res.data)
-            return jsonPlaceholder.get<Photos[]>('/photos', {
-                params: {
-                    _limit: 30
-                }
+            console.log('Albums', res.data)
+            res.data.map(asd => {
+                jsonPlaceholder.get<Photos[]>(`/albums/${asd.id}/photos`, {
+                    params: {
+                        _limit: 3
+                    }
+                }).then((responeAlbum => {
+                    responeAlbum.data.map(element => {
+                        
+                        setPhotos([...photos, element])
+                    })
+                }))
             })
-        }).then((res) => {
-            setPhotos(res.data)
+            // return jsonPlaceholder.get<Photos>('/photos',{
+            //     params:{
+            //         _limit: 500
+            //     }
+            // })
         })
     }, [])
+
+    console.log('Final state photos', photos)
 
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Text>Photos Screen</Text>
-            <PhotosComponent photos={photos} albums={albums} />
+            {/* <PhotosComponent photos={photos} albums={albums} /> */}
         </View>
     )
 }

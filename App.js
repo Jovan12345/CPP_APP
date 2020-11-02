@@ -11,16 +11,30 @@ import CommentsScreen from './src/screens/CommentsScreen';
 import PhotosScreen from './src/screens/PhotosScreen';
 import MyPhotosScreen from './src/screens/MyPhotosScreen';
 
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, compose } from 'redux'
+import createSagaMiddleware from 'redux-saga';
+import rootReducer from './src/reducers';
+import { watchAddPhoto } from './src/sagas/saga'
+import { composeWithDevTools } from 'redux-devtools-extension';
+
 const Tab = createBottomTabNavigator();
+
+const sagaMiddleware = createSagaMiddleware();
+
+// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)))
+
+sagaMiddleware.run(watchAddPhoto);
 
 const App = () => {
   return (
-    <>
+    <Provider store={store}>
       <StatusBar barStyle="dark-content" />
 
       <NavigationContainer>
         <Tab.Navigator
-          initialRouteName="Posts"
+          initialRouteName="My photos"
           tabBarOptions={{
             activeTintColor: 'black',
             activeBackgroundColor: '#e91e63',
@@ -36,7 +50,7 @@ const App = () => {
 
         </Tab.Navigator>
       </NavigationContainer>
-    </>
+    </Provider>
   );
 };
 

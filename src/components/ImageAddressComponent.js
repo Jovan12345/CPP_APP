@@ -1,35 +1,52 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
-import {useDispatch} from 'react-redux';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Button } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { showMessage, hideMessage } from "react-native-flash-message";
 
-export default function ImageAddressComponent({ uri, latitude, longitude, photosCity, index }) {
+
+export default function ImageAddressComponent({ uri, latitude, longitude, photosCity, index, navigation }) {
     const dispatch = useDispatch();
     useEffect(() => {
-        if (latitude, longitude) {
-            dispatch({
-                type: 'ADD_ADDRESS',
-                payload: { latitude: latitude, longitude: longitude },
-            });
-        }
+        dispatch({
+            type: 'ADD_ADDRESS',
+            payload: { latitude: latitude, longitude: longitude },
+        });
     }, []);
 
-    if (photosCity.length!== 0) {
-        console.log('Photos city', photosCity[index].photoCity)
+    const findMapLocation = () => { 
+        if (latitude && longitude) {
+            navigation.navigate('Map', {
+                uri: uri,
+                latitude: latitude,
+                longitude: longitude
+            })
+        } else {
+            showMessage({
+                message: "There is no location info",
+                type: "info",
+                animationDuration: 500,
+                duration: 8850
+            });
+        }
     }
-
 
     return (
         <View style={styles.container}>
-            <Image style={styles.imageStyle} source={{ uri }} />
-            <View style={styles.addressStyle}>
-                {latitude && longitude ?
-                    <View>
-                        <Text>Location: latitude={latitude} longitude={longitude}</Text>
-                    </View>
-                    :
-                    <Text>Location: Location for this picture is not available</Text>}
-            </View>
-
+            <TouchableOpacity
+                style={styles.touchablePart}
+                onPress={findMapLocation}
+            // onPress={(e) => console.log('Pressed', latitude, longitude)}
+            >
+                <Image style={styles.imageStyle} source={{ uri }} />
+                <View style={styles.addressStyle}>
+                    {photosCity[index] ?
+                        <View>
+                            <Text>Location: {photosCity[index].photoCity}</Text>
+                        </View>
+                        :
+                        <Text>Location: Loading...</Text>}
+                </View>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -37,10 +54,13 @@ export default function ImageAddressComponent({ uri, latitude, longitude, photos
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: "row",
         borderBottomWidth: 2,
         borderBottomColor: 'grey',
-        marginHorizontal: 10
+        marginHorizontal: 10,
+    },
+    touchablePart: {
+        flex: 1,
+        flexDirection: "row",
     },
     imageStyle: {
         justifyContent: "flex-start",

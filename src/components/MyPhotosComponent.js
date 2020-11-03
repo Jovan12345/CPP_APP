@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Button } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import ImagePicker from 'react-native-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
+import FlashMessage from "react-native-flash-message";
+import Geolocation from '@react-native-community/geolocation';
 
 import ImageAddressComponent from './ImageAddressComponent'
 
 
-const MyPhotosComponent = () => {
+const MyPhotosComponent = ({ navigation }) => {
     const [photo, setPhoto] = useState({})
     const myPhotos = useSelector((state) => state.photos);
     const photosCity = useSelector((state) => state.photoCity);
@@ -18,7 +20,7 @@ const MyPhotosComponent = () => {
 
     useEffect(() => {
         if (Object.keys(photo).length !== 0) {
-            
+
             dispatch({ type: "ADD_PHOTO", payload: photo })
         }
     }, [photo])
@@ -29,7 +31,6 @@ const MyPhotosComponent = () => {
             mediaType: "photo",
             cameraType: "back",
             allowsEditing: true,
-            noData: true,
             maxWidth: 8000,
             maxHeight: 8000,
             storageOptions: {
@@ -39,33 +40,39 @@ const MyPhotosComponent = () => {
         };
         ImagePicker.showImagePicker(options, res => {
 
-            if (res.didCancel) {
-                console.log('User cancelled image picker');
-            } else if (res.error) {
-                console.log('ImagePicker Error: ', res.error);
-            } else {
-                setPhoto({
-                    uri: res.uri,
-                    latitude: res.latitude,
-                    longitude: res.longitude,
-                    fileName: res.fileName
-                })
-            }
+            Geolocation.getCurrentPosition(gps => {
+                if (res.didCancel) {
+                    console.log('User cancelled image picker');
+                } else if (res.error) {
+                    console.log('ImagePicker Error: ', res.error);
+                } else {
+                    const latitude = res.latitude ? res.latitude : gps.coords.latitude;
+                    const longitude = res.longitude ? res.longitude : gps.coords.longitude;
+                    setPhoto({
+                        uri: res.uri,
+                        latitude: latitude,
+                        longitude: longitude,
+                        fileName: res.fileName
+                    })
+                }
+            })
+
         });
     };
 
-    const renderItemFunc = ({item, index}) => {
-        const {uri, latitude, longitude} = item;
+    const renderItemFunc = ({ item, index }) => {
+        const { uri, latitude, longitude } = item;
 
-        return <ImageAddressComponent uri={uri} latitude={latitude} longitude={longitude} photosCity={photosCity} index={index}/>
-      };
+        return <ImageAddressComponent uri={uri} latitude={latitude} longitude={longitude} photosCity={photosCity} index={index} navigation={navigation} />
+    };
 
     return (
         <View style={styles.container}>
+            {photoData.length === 0 ? <Text style={styles.addPhotoTextStyle}>Add new photo ⇲</Text> : null}
             <FlatList
                 data={photoData}
                 renderItem={renderItemFunc}
-                keyExtractor={item => item.fileName}
+                keyExtractor={(item, index) => item.fileName + index}
             />
             <TouchableOpacity style={styles.plusIcon} onPress={chooseImg}>
                 <Icon
@@ -74,6 +81,7 @@ const MyPhotosComponent = () => {
                     color="#009688"
                 />
             </TouchableOpacity>
+            <FlashMessage position="bottom" />
         </View>
     )
 }
@@ -86,6 +94,11 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 15,
         right: 15
+    },
+    addPhotoTextStyle: {
+        fontSize: 25,
+        alignSelf: 'center',
+        marginTop: '50%'
     }
 })
 

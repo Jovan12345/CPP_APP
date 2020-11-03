@@ -39,23 +39,32 @@ const MyPhotosComponent = ({ navigation }) => {
             },
         };
         ImagePicker.showImagePicker(options, res => {
-
-            Geolocation.getCurrentPosition(gps => {
-                if (res.didCancel) {
-                    console.log('User cancelled image picker');
-                } else if (res.error) {
-                    console.log('ImagePicker Error: ', res.error);
-                } else {
-                    const latitude = res.latitude ? res.latitude : gps.coords.latitude;
-                    const longitude = res.longitude ? res.longitude : gps.coords.longitude;
-                    setPhoto({
-                        uri: res.uri,
-                        latitude: latitude,
-                        longitude: longitude,
-                        fileName: res.fileName
-                    })
-                }
-            })
+            try {
+                Geolocation.getCurrentPosition(gps => {
+                    if (res.didCancel) {
+                        console.log('User cancelled image picker');
+                    } else if (res.error) {
+                        console.log('ImagePicker Error: ', res.error);
+                    } else {
+                        const latitude = res.latitude ? res.latitude : gps.coords.latitude;
+                        const longitude = res.longitude ? res.longitude : gps.coords.longitude;
+                        setPhoto({
+                            uri: res.uri,
+                            latitude: latitude,
+                            longitude: longitude,
+                            fileName: res.fileName
+                        })
+                    }
+                })
+            } catch (error) {
+                setPhoto({
+                    uri: res.uri,
+                    latitude: res.latitude,
+                    longitude: res.longitude,
+                    fileName: res.fileName
+                })
+            }
+            
 
         });
     };

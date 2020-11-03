@@ -17,8 +17,8 @@ const CommentComponent = ({ comments }) => {
                                     <Text>Post: </Text>
                                 </View>
                                 <View style={styles.containerBody}>
-                                    <Text style={{ paddingBottom: 5 }}>{item.name}</Text>
-                                    <Text>{item.body}</Text>
+                                    <Text style={{ paddingBottom: 5, flex: 1, flexWrap: 'wrap' }}>{item.name.replaceAll("\n", " ")}</Text>
+                                    <Text style={{ flex: 1, flexWrap: 'wrap' }}>{item.body.replaceAll("\n", " ")}</Text>
                                 </View>
                             </View>
                         )
@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     },
     containerBody: {
         margin: 10,
+        flex: 1
     }
 })
 

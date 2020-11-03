@@ -34,7 +34,7 @@ const PhotosScreen = () => {
 
     return (
         <View style={{ flex: 1 }}>
-            <Text>Photos Screen</Text>
+            <Text style={{ alignSelf: "center" }}>Photos Screen</Text>
             <PhotosComponent photos={photos} albums={albums} />
         </View>
     )

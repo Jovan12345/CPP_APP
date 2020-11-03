@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 
 import jsonPlaceholder from '../apis/jsonPlaceholder';
 
@@ -19,13 +19,17 @@ const PostsScreen = () => {
     }, [])
 
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Posts Screen</Text>
+        <SafeAreaView style={styles.container}>
+            <Text style={{ alignSelf: "center" }}>Posts Screen</Text>
             <PostComponent posts={posts} />
-        </View>
+        </SafeAreaView>
     )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    }
+})
 
 export default PostsScreen;

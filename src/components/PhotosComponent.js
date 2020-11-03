@@ -1,6 +1,5 @@
 import React from 'react'
-import { FlatList, StyleSheet, Text, View, StatusBar, Image, SectionList } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { FlatList, StyleSheet, Text, View, StatusBar, Image, SectionList, ScrollView, SafeAreaView } from 'react-native'
 
 const PhotosComponent = ({ photos, albums }) => {
 
@@ -14,41 +13,41 @@ const PhotosComponent = ({ photos, albums }) => {
         newObj = { 'title': findTitle(value.data[0].albumId), 'data': value.data }
         return newObj;
     })
-
+    console.log(sectionObj.map(item => console.log(item)))
     return (
-        <SafeAreaView style={styles.safeAreaView}>
-            <View>
-                <SectionList
-                    sections={sectionObj}
-                    keyExtractor={(item, index) => item + index}
-                    renderItem={({item}) => {
-                        return (
-                            <View style={styles.container}>
-                                <Image
-                                    source={{ uri: item.thumbnailUrl }}
-                                    style={styles.imageStyle}
-                                />
-                            </View>
-                        )
-                    }}
-                    renderSectionHeader={({ section: { title } }) => (
-                        <Text>{title}</Text>
-                    )}
-                />
-            </View>
-        </SafeAreaView>
+        <ScrollView style={{ flex: 1, }}>
+            {sectionObj.map((item, index) => {
+                return (
+                    <View key={item.title + index}>
+                        <Text>{item.title}</Text>
+                        <FlatList
+                            numColumns={3}
+                            data={item.data}
+                            keyExtractor={(item, index) => item.id + index}
+                            style={{ flex: 1, }}
+                            renderItem={({ item }) => {
+                                return (
+                                    <View style={styles.container}>
+                                        <Image
+                                            source={{ uri: item.thumbnailUrl }}
+                                            style={styles.imageStyle}
+                                        />
+                                    </View>
+                                )
+                            }}
+                        />
+                    </View>
+                )
+            })}
+        </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
-    safeAreaView: {
-        flex: 1,
-        marginTop: StatusBar.currentHeight || 0,
-    },
     container: {
         flex: 1,
-        flexWrap: 'wrap',
-        backgroundColor: 'red',
+        alignItems:'center',
+        backgroundColor:'green'
     },
     imageStyle: {
         width: 120,

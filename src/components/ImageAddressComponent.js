@@ -35,7 +35,6 @@ export default function ImageAddressComponent({ uri, latitude, longitude, photos
             <TouchableOpacity
                 style={styles.touchablePart}
                 onPress={findMapLocation}
-            // onPress={(e) => console.log('Pressed', latitude, longitude)}
             >
                 <Image style={styles.imageStyle} source={{ uri }} />
                 <View style={styles.addressStyle}>

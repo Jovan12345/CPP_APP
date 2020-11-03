@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, SafeAreaView } from 'react-native'
 
 import jsonPlaceholder from '../apis/jsonPlaceholder';
 import { Comment } from '../interfaces/postInterfaces';
@@ -18,13 +18,15 @@ const CommentsScreen = () => {
     }, [])
 
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Comments Screen</Text>
+        <SafeAreaView style={styles.container}>
+            <Text style={{ alignSelf: "center" }}>Comments Screen</Text>
             <CommentComponent comments={comments} />
-        </View>
+        </SafeAreaView>
     )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: { flex: 1 }
+})
 
 export default CommentsScreen;

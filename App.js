@@ -30,7 +30,7 @@ const App = () => {
 
       <NavigationContainer>
         <Tab.Navigator
-          initialRouteName="My photos"
+          initialRouteName="Posts"
           tabBarOptions={{
             activeTintColor: 'black',
             activeBackgroundColor: '#e91e63',

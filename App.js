@@ -15,7 +15,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux'
 import createSagaMiddleware from 'redux-saga';
 import rootReducer from './src/reducers';
-import { watchAddPhoto } from './src/sagas/saga'
+import rootSaga from './src/sagas/saga'
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 const Tab = createBottomTabNavigator();
@@ -25,7 +25,7 @@ const sagaMiddleware = createSagaMiddleware();
 // const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)))
 
-sagaMiddleware.run(watchAddPhoto);
+sagaMiddleware.run(rootSaga);
 
 const App = () => {
   return (

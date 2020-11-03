@@ -10,12 +10,15 @@ import ImageAddressComponent from './ImageAddressComponent'
 const MyPhotosComponent = () => {
     const [photo, setPhoto] = useState({})
     const myPhotos = useSelector((state) => state.photos);
+    const photosCity = useSelector((state) => state.photoCity);
+
     const dispatch = useDispatch();
 
     const photoData = myPhotos.map(photoDetails => photoDetails.photoData)
 
     useEffect(() => {
         if (Object.keys(photo).length !== 0) {
+            
             dispatch({ type: "ADD_PHOTO", payload: photo })
         }
     }, [photo])
@@ -53,8 +56,8 @@ const MyPhotosComponent = () => {
 
     const renderItemFunc = ({item, index}) => {
         const {uri, latitude, longitude} = item;
-        
-        return <ImageAddressComponent uri={uri} latitude={latitude} longitude={longitude}/>
+
+        return <ImageAddressComponent uri={uri} latitude={latitude} longitude={longitude} photosCity={photosCity} index={index}/>
       };
 
     return (

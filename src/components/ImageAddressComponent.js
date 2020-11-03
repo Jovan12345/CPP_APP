@@ -1,7 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
+import {useDispatch} from 'react-redux';
 
-export default function ImageAddressComponent({ uri, latitude, longitude }) {
+export default function ImageAddressComponent({ uri, latitude, longitude, photosCity, index }) {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        if (latitude, longitude) {
+            dispatch({
+                type: 'ADD_ADDRESS',
+                payload: { latitude: latitude, longitude: longitude },
+            });
+        }
+    }, []);
+
+    if (photosCity.length!== 0) {
+        console.log('Photos city', photosCity[index].photoCity)
+    }
+
+
     return (
         <View style={styles.container}>
             <Image style={styles.imageStyle} source={{ uri }} />

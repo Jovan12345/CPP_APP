@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, Button } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message";
 
 
 export default function ImageAddressComponent({ uri, latitude, longitude, photosCity, index, navigation }) {
@@ -24,8 +24,8 @@ export default function ImageAddressComponent({ uri, latitude, longitude, photos
             showMessage({
                 message: "There is no location info",
                 type: "info",
-                animationDuration: 500,
-                duration: 8850
+                animationDuration: 350,
+                duration: 850
             });
         }
     }

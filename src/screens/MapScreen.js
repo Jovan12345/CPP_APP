@@ -5,12 +5,11 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 export default function MapScreen({ route: { params } }) {
     const { uri, latitude, longitude } = params;
     return (
-        <View style={{ backgroundColor: "blue", flex: 1 }}>
-            <Text>Map Screen</Text>
+        <View style={{ flex: 1 }}>
             <Text>{params.uri}</Text>
             <View style={styles.container}>
                 <MapView
-                    provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+                    provider={PROVIDER_GOOGLE}
                     style={styles.map}
                     initialRegion={{
                         latitude: latitude,

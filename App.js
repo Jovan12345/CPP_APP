@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet, StatusBar } from 'react-native';
+import { StyleSheet, StatusBar, View } from 'react-native';
 
 import PostsScreen from './src/screens/PostsScreen';
 import CommentsScreen from './src/screens/CommentsScreen';
@@ -26,18 +26,24 @@ sagaMiddleware.run(rootSaga);
 const App = () => {
   return (
     <Provider store={store}>
-      <StatusBar barStyle="dark-content" />
 
+      <StatusBar barStyle="dark-content" />
       <NavigationContainer>
         <Tab.Navigator
           initialRouteName="Posts"
-          tabBarOptions={{
-            activeTintColor: 'black',
-            activeBackgroundColor: '#e91e63',
-            labelStyle: {
-              fontSize: 17,
-            },
-          }}
+          tabBarOptions={
+            {
+              activeTintColor: '#e91e63',
+              labelStyle: {
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                textAlignVertical: 'center',
+                fontSize: 17
+              },
+            }}
         >
           <Tab.Screen name="Posts" component={PostsScreen} />
           <Tab.Screen name="Comments" component={CommentsScreen} />
@@ -45,8 +51,10 @@ const App = () => {
           <Tab.Screen name="My photos" component={MyPhotosScreen} />
 
         </Tab.Navigator>
+
       </NavigationContainer>
     </Provider>
+
   );
 };
 

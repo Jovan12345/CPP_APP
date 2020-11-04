@@ -18,10 +18,16 @@ const PostsScreen = () => {
         }).then((res) => setPosts(res.data)).catch(err => console.log('error', err))
     }, [])
 
+    const helpRender = () => {
+        if (posts.length !== 0) {
+            return <PostComponent posts={posts} />
+        }
+        return <Text style={styles.loadingTextStyle}>Loading posts...</Text>
+    }
+
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={{ alignSelf: "center" }}>Posts Screen</Text>
-            <PostComponent posts={posts} />
+            {helpRender()}
         </SafeAreaView>
     )
 }
@@ -29,6 +35,12 @@ const PostsScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    loadingTextStyle: {
+        position: 'absolute',
+        top: '44%',
+        alignSelf: 'center',
+        fontSize: 18
     }
 })
 

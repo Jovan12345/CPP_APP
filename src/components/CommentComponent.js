@@ -13,12 +13,13 @@ const CommentComponent = ({ comments }) => {
                         return (
                             <View style={styles.container}>
                                 <View style={styles.containerHeaders}>
-                                    <Text style={{ paddingBottom: 5 }}>Title: </Text>
-                                    <Text>Post: </Text>
+                                    <Text style={{ paddingBottom: 5, paddingHorizontal: 15 }}>Title: </Text>
+                                    <Text style={{ paddingBottom: 5, flex: 1, flexWrap: 'wrap' }}>{item.name.replace(/\n/g, ' ')}</Text>
+
                                 </View>
                                 <View style={styles.containerBody}>
-                                    <Text style={{ paddingBottom: 5, flex: 1, flexWrap: 'wrap' }}>{item.name.replaceAll("\n", " ")}</Text>
-                                    <Text style={{ flex: 1, flexWrap: 'wrap' }}>{item.body.replaceAll("\n", " ")}</Text>
+                                    <Text style={{paddingHorizontal: 15}}>Post: </Text>
+                                    <Text style={{ flex: 1, flexWrap: 'wrap' }}>{item.body.replace(/\n/g, ' ')}</Text>
                                 </View>
                             </View>
                         )
@@ -37,15 +38,18 @@ const styles = StyleSheet.create({
     container: {
         borderTopWidth: 2,
         borderTopColor: 'grey',
-        flexDirection: 'row',
         flex: 1
     },
     containerHeaders: {
-        margin: 10,
+        marginTop: 10,
+        marginRight: 10,
+        marginLeft: 10,
+        flexDirection: 'row'
     },
     containerBody: {
         margin: 10,
-        flex: 1
+        flex: 1,
+        flexDirection: 'row'
     }
 })
 

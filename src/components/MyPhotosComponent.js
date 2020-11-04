@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Button } from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
-import ImagePicker from 'react-native-image-picker';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import ImagePicker from 'react-native-image-picker';
+
+
+import Icon from 'react-native-vector-icons/AntDesign';
 import FlashMessage from "react-native-flash-message";
 import Geolocation from '@react-native-community/geolocation';
 
@@ -39,32 +41,33 @@ const MyPhotosComponent = ({ navigation }) => {
             },
         };
         ImagePicker.showImagePicker(options, res => {
-            try {
+            if (res.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (res.error) {
+                console.log('ImagePicker Error: ', res.error);
+            } else {
+                console.log('Result type', res.sourceType)
                 Geolocation.getCurrentPosition(gps => {
-                    if (res.didCancel) {
-                        console.log('User cancelled image picker');
-                    } else if (res.error) {
-                        console.log('ImagePicker Error: ', res.error);
-                    } else {
-                        const latitude = res.latitude ? res.latitude : gps.coords.latitude;
-                        const longitude = res.longitude ? res.longitude : gps.coords.longitude;
-                        setPhoto({
-                            uri: res.uri,
-                            latitude: latitude,
-                            longitude: longitude,
-                            fileName: res.fileName
-                        })
-                    }
+                    const latitude = res.latitude ? res.latitude : gps.coords.latitude;
+                    const longitude = res.longitude ? res.longitude : gps.coords.longitude;
+                    setPhoto({
+                        uri: res.uri,
+                        latitude: latitude,
+                        longitude: longitude,
+                        fileName: res.fileName
+                    })
+                }, (err) => {
+                    setPhoto({
+                        uri: res.uri,
+                        latitude: res.latitude,
+                        longitude: res.longitude,
+                        fileName: res.fileName
+                    })
                 })
-            } catch (error) {
-                setPhoto({
-                    uri: res.uri,
-                    latitude: res.latitude,
-                    longitude: res.longitude,
-                    fileName: res.fileName
-                })
+
             }
             
+
 
         });
     };

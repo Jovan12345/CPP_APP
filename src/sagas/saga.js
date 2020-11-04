@@ -19,8 +19,8 @@ function* takeAddressAPI(action) {
           q: `${action.payload.latitude},${action.payload.longitude}`
         }
       }).then(res => res.data.results[0].components.city)
-    }else{
-      photoCity='Location for this picture is not available'
+    } else {
+      photoCity = 'Location for this picture is not available'
     }
 
     yield put({ type: 'ADD_CITY_ASYNC', payload: photoCity })

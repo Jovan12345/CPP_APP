@@ -17,16 +17,28 @@ const CommentsScreen = () => {
         }).then((res) => setComments(res.data)).catch(err => console.log('error', err))
     }, [])
 
+    const helpRender = () => {
+        if (comments.length !== 0) {
+            return <CommentComponent comments={comments} />
+        }
+        return <Text style={styles.loadingTextStyle}>Loading comments...</Text>
+    }
+
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={{ alignSelf: "center" }}>Comments Screen</Text>
-            <CommentComponent comments={comments} />
+            {helpRender()}
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1 }
+    container: { flex: 1 },
+    loadingTextStyle: {
+        position: 'absolute',
+        top: '44%',
+        alignSelf: 'center',
+        fontSize: 18
+    }
 })
 
 export default CommentsScreen;

@@ -13,29 +13,33 @@ const PhotosComponent = ({ photos, albums }) => {
         newObj = { 'title': findTitle(value.data[0].albumId), 'data': value.data }
         return newObj;
     })
-    console.log(sectionObj.map(item => console.log(item)))
+
     return (
-        <ScrollView style={{ flex: 1, }}>
+        <ScrollView style={{ flex: 1, marginTop: StatusBar.currentHeight || 0 }}>
             {sectionObj.map((item, index) => {
                 return (
-                    <View key={item.title + index}>
-                        <Text>{item.title}</Text>
-                        <FlatList
-                            numColumns={3}
-                            data={item.data}
-                            keyExtractor={(item, index) => item.id + index}
-                            style={{ flex: 1, }}
-                            renderItem={({ item }) => {
-                                return (
-                                    <View style={styles.container}>
-                                        <Image
-                                            source={{ uri: item.thumbnailUrl }}
-                                            style={styles.imageStyle}
-                                        />
-                                    </View>
-                                )
-                            }}
-                        />
+                    <View key={item.title + index} >
+                        <Text style={styles.albumTitle}>{item.title.replace(/\n/g, ' ')}</Text>
+                        <ScrollView style={{ paddingVertical: 15, paddingHorizontal: 10 }}>
+                            <View style={styles.albumStyle}>
+                                {item.data.map((item, index) => {
+                                    return (
+                                        <View
+                                            key={item.id + index}
+                                            style={{
+                                                marginBottom: 20
+                                            }}
+                                        >
+                                            <Image
+                                                source={{ uri: item.thumbnailUrl }}
+                                                style={styles.imageStyle}
+                                            />
+                                            <Text style={{ alignSelf: 'center' }}>{index + 1}</Text>
+                                        </View>
+                                    )
+                                })}
+                            </View>
+                        </ScrollView>
                     </View>
                 )
             })}
@@ -44,14 +48,23 @@ const PhotosComponent = ({ photos, albums }) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    albumStyle: {
         flex: 1,
-        alignItems:'center',
-        backgroundColor:'green'
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around'
+    },
+    albumTitle: {
+        flex: 1,
+        textAlign: "center",
+        backgroundColor: '#c4faf7',
+        padding: 10,
+        fontSize: 17
     },
     imageStyle: {
-        width: 120,
-        height: 120,
+        width: 150,
+        height: 150,
+        marginBottom: 10
     }
 })
 

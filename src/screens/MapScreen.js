@@ -8,6 +8,7 @@ export default function MapScreen({ route: { params } }) {
         <View style={{ flex: 1 }}>
             <Text>{params.uri}</Text>
             <View style={styles.container}>
+                {/* Google maps are used to enable the user to find out where is the location of the photo */}
                 <MapView
                     provider={PROVIDER_GOOGLE}
                     style={styles.map}
@@ -24,6 +25,7 @@ export default function MapScreen({ route: { params } }) {
                             longitude: longitude
                         }}
                     >
+                        {/* Two images are used, one to display the marker on the map, and second to display the photo that the user has choosen */}
                         <View style={{flex:1}}>
                             <Image source={{ uri }} style={{
                                 width: 100,

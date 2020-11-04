@@ -15,12 +15,15 @@ import rootReducer from './src/reducers';
 import rootSaga from './src/sagas/saga'
 import { composeWithDevTools } from 'redux-devtools-extension';
 
+// initialize Bottom tab navigation
 const Tab = createBottomTabNavigator();
 
 const sagaMiddleware = createSagaMiddleware();
 
+// create redux store with redux-saga middleware
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)))
 
+// starting root saga
 sagaMiddleware.run(rootSaga);
 
 const App = () => {

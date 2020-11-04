@@ -5,28 +5,30 @@ import PhotosComponent from '../components/PhotosComponent';
 
 import jsonPlaceholder from '../apis/jsonPlaceholder';
 import { Photos, Album } from '../interfaces/postInterfaces';
-// @ts-ignore
-import AnimatedEllipsis from 'react-native-animated-ellipsis';
 
 const PhotosScreen = () => {
     const [photos, setPhotos] = useState<Photos[]>([])
     const [albums, setAlbums] = useState<Album[]>([])
 
+    // When the component is mounted a request is made to the jsonplaceholder api to get the albums 
+    // and than a chained request to take the photos for the corresponding photos (using the albumId property)
     useEffect(() => {
         jsonPlaceholder.get<Album[]>('/albums', {
             params: { _limit: 10 }
         }).then(res => {
             setAlbums(res.data)
-            const dataa = res.data.map(async asd => {
+            const photosRes = res.data.map(async asd => {
                 return jsonPlaceholder.get<Photos[]>(`/albums/${asd.id}/photos`, {
                     params: { _limit: 12 }
                 })
 
             })
-            Promise.all(dataa).then((completed: any) => setPhotos(completed))
+            // The promise is used to wait for both requests to the jsonplaceholder api to finish before updating the state and rerendering the Component
+            Promise.all(photosRes).then((completed: any) => setPhotos(completed))
         })
     }, [])
 
+    // The albums title and the actual photos for the albums are rendered in he Photos Component
     const helpRender = () => {
         if (photos.length !== 0 && albums.length !== 0) {
             return <PhotosComponent photos={photos} albums={albums} />

@@ -46,7 +46,7 @@ const MyPhotosComponent = ({ navigation }) => {
             } else if (res.error) {
                 console.log('ImagePicker Error: ', res.error);
             } else {
-                console.log('Result type', res.sourceType)
+                // Geolocation is used as an alternative as the ImagePicker does not pick up the location every time
                 Geolocation.getCurrentPosition(gps => {
                     const latitude = res.latitude ? res.latitude : gps.coords.latitude;
                     const longitude = res.longitude ? res.longitude : gps.coords.longitude;

@@ -9,14 +9,16 @@ import CommentComponent from '../components/CommentComponent';
 const CommentsScreen = () => {
     const [comments, setComments] = useState<Comment[]>([])
 
+    //  When the component is mounted, a request is made to the jsonplaceholder api to get the comments
     useEffect(() => {
         jsonPlaceholder.get<Comment[]>('/comments', {
             params: {
-                _limit: 30
+                _limit: 50
             }
         }).then((res) => setComments(res.data)).catch(err => console.log('error', err))
     }, [])
 
+    // The comments are rendered in the child component CommentComponent
     const helpRender = () => {
         if (comments.length !== 0) {
             return <CommentComponent comments={comments} />

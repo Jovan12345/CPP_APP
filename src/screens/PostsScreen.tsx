@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Text,  SafeAreaView } from 'react-native';
 
 import jsonPlaceholder from '../apis/jsonPlaceholder';
-
 import PostComponent from '../components/PostComponent';
 
 import { Post } from '../interfaces/postInterfaces';
@@ -10,6 +9,7 @@ import { Post } from '../interfaces/postInterfaces';
 const PostsScreen = () => {
     const [posts, setPosts] = useState<Post[]>([])
 
+    // When the component is mounted, a request is made to the jsonplaceholder api to get the posts
     useEffect(() => {
         jsonPlaceholder.get<Post[]>('/posts', {
             params: {
@@ -18,6 +18,7 @@ const PostsScreen = () => {
         }).then((res) => setPosts(res.data)).catch(err => console.log('error', err))
     }, [])
 
+    // The posts are rendered in the child component PostComponent
     const helpRender = () => {
         if (posts.length !== 0) {
             return <PostComponent posts={posts} />

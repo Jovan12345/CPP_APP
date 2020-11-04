@@ -13,7 +13,7 @@ const PostsScreen = () => {
     useEffect(() => {
         jsonPlaceholder.get<Post[]>('/posts', {
             params: {
-                _limit: 30
+                _limit: 50
             }
         }).then((res) => setPosts(res.data)).catch(err => console.log('error', err))
     }, [])

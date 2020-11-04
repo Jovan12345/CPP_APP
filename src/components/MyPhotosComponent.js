@@ -66,7 +66,7 @@ const MyPhotosComponent = ({ navigation }) => {
                 })
 
             }
-            
+
 
 
         });
@@ -87,6 +87,7 @@ const MyPhotosComponent = ({ navigation }) => {
                 keyExtractor={(item, index) => item.fileName + index}
             />
             <TouchableOpacity style={styles.plusIcon} onPress={chooseImg}>
+                {photoData.length === 0 ? <Text style={{ paddingRight: 10 }}>Add photo</Text> : null}
                 <Icon
                     name="pluscircle"
                     size={50}
@@ -105,10 +106,13 @@ const styles = StyleSheet.create({
     plusIcon: {
         position: 'absolute',
         bottom: 15,
-        right: 15
+        right: 15,
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     addPhotoTextStyle: {
-        fontSize: 25,
+        fontSize: 20,
         alignSelf: 'center',
         marginTop: '50%'
     }

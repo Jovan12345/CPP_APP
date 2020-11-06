@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
+import { NavigationStackProp } from 'react-navigation-stack';
 
 
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -9,12 +10,17 @@ import FlashMessage from "react-native-flash-message";
 import Geolocation from '@react-native-community/geolocation';
 
 import ImageAddressComponent from './ImageAddressComponent'
+import { Photo, PhotoAddress, photoData } from '../interfaces/rootInterfaces';
 
 
-const MyPhotosComponent = ({ navigation }) => {
+type Props = {
+    navigation: NavigationStackProp;
+};
+
+const MyPhotosComponent = ({ navigation }: Props) => {
     const [photo, setPhoto] = useState({})
-    const myPhotos = useSelector((state) => state.photos);
-    const photosCity = useSelector((state) => state.photoCity);
+    const myPhotos = useSelector((state: Photo) => state.photos);
+    const photosCity = useSelector((state: PhotoAddress) => state.photoCity);
 
     const dispatch = useDispatch();
 
@@ -30,11 +36,6 @@ const MyPhotosComponent = ({ navigation }) => {
     const chooseImg = () => {
         var options = {
             title: 'Select Image',
-            mediaType: "photo",
-            cameraType: "back",
-            allowsEditing: true,
-            maxWidth: 8000,
-            maxHeight: 8000,
             storageOptions: {
                 skipBackup: true,
                 path: 'images',
@@ -66,16 +67,15 @@ const MyPhotosComponent = ({ navigation }) => {
                 })
 
             }
-
-
-
         });
     };
 
-    const renderItemFunc = ({ item, index }) => {
+
+
+    const renderItemFunc = ({ item, index }: { item: photoData, index: number }) => {
         const { uri, latitude, longitude } = item;
 
-        return <ImageAddressComponent uri={uri} latitude={latitude} longitude={longitude} photosCity={photosCity} index={index} navigation={navigation} />
+        return <ImageAddressComponent uri={uri} latitude={latitude} longitude={longitude} photoAddress={photosCity} index={index} navigation={navigation} />
     };
 
     return (

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, SafeAreaView } from 'react-native'
 
 import jsonPlaceholder from '../apis/jsonPlaceholder';
-import { Comment } from '../interfaces/postInterfaces';
+import { Comment } from '../interfaces/rootInterfaces';
 
-import CommentComponent from '../components/CommentComponent';
+import ListSectionsComponent from '../components/ListSectionsComponent';
 
 const CommentsScreen = () => {
     const [comments, setComments] = useState<Comment[]>([])
@@ -21,7 +21,8 @@ const CommentsScreen = () => {
     // The comments are rendered in the child component CommentComponent
     const helpRender = () => {
         if (comments.length !== 0) {
-            return <CommentComponent comments={comments} />
+            // return <CommentComponent comments={comments} />
+            return <ListSectionsComponent data={comments} titleOne={"Title: "} titleTwo={"Post: "} type={"comment"}/>
         }
         return <Text style={styles.loadingTextStyle}>Loading comments...</Text>
     }

@@ -34,11 +34,27 @@ export interface Photos{
     thumbnailUrl: string
 };
 
+export interface photoData {
+    fileName: string;
+    latitude: number;
+    longitude: number;
+    uri: string;
+  }
+
+interface cameraInfo {
+    photoData: photoData;
+  }
+
+export interface Photo {
+    photos: cameraInfo[];
+  }
+
 export interface PhotosListProps {
     comments: Photos[];
 };
 
 export interface Album{
+    find: any;
     userId: number,
     id: number,
     title: string,
@@ -47,3 +63,13 @@ export interface Album{
 export interface AlbumListProps {
     comments: Album[];
 };
+
+export interface photosGeoLoc{
+    photoAddress: string,
+    photoCity: string,
+    index:number
+}
+
+export interface PhotoAddress{
+    photoCity: photosGeoLoc[],
+}

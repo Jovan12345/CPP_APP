@@ -2,9 +2,21 @@ import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { showMessage } from "react-native-flash-message";
+import { photosGeoLoc } from '../interfaces/rootInterfaces';
+import { NavigationStackProp } from 'react-navigation-stack';
 
 
-export default function ImageAddressComponent({ uri, latitude, longitude, photosCity, index, navigation }) {
+
+type Props = {
+    uri: string;
+    latitude: number;
+    longitude: number;
+    photoAddress: photosGeoLoc[];
+    index: number;
+    navigation: NavigationStackProp;
+};
+
+export default function ImageAddressComponent({ uri, latitude, longitude, photoAddress, index, navigation } : Props) {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch({
@@ -38,9 +50,9 @@ export default function ImageAddressComponent({ uri, latitude, longitude, photos
             >
                 <Image style={styles.imageStyle} source={{ uri }} />
                 <View style={styles.addressStyle}>
-                    {photosCity[index] ?
+                    {photoAddress[index] ?
                         <View>
-                            <Text>Location: {photosCity[index].photoCity}</Text>
+                            <Text>Location: {photoAddress[index].photoCity}</Text>
                         </View>
                         :
                         <Text>Location: Loading...</Text>}

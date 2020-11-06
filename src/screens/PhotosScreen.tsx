@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import PhotosComponent from '../components/PhotosComponent';
 
 import jsonPlaceholder from '../apis/jsonPlaceholder';
-import { Photos, Album } from '../interfaces/postInterfaces';
+import { Photos, Album } from '../interfaces/rootInterfaces';
 
 const PhotosScreen = () => {
     const [photos, setPhotos] = useState<Photos[]>([])
@@ -14,17 +14,17 @@ const PhotosScreen = () => {
     // and than a chained request to take the photos for the corresponding photos (using the albumId property)
     useEffect(() => {
         jsonPlaceholder.get<Album[]>('/albums', {
-            params: { _limit: 10 }
+            params: { _limit: 7 }
         }).then(res => {
             setAlbums(res.data)
-            const photosRes = res.data.map(async asd => {
-                return jsonPlaceholder.get<Photos[]>(`/albums/${asd.id}/photos`, {
-                    params: { _limit: 12 }
+            const albumsRes = res.data.map(async albumRes => {
+                return jsonPlaceholder.get<Photos[]>(`/albums/${albumRes.id}/photos`, {
+                    params: { _limit: 9 }
                 })
 
             })
             // The promise is used to wait for both requests to the jsonplaceholder api to finish before updating the state and rerendering the Component
-            Promise.all(photosRes).then((completed: any) => setPhotos(completed))
+            Promise.all(albumsRes).then((completed: any) => setPhotos(completed))
         })
     }, [])
 

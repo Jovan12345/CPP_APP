@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text,  SafeAreaView } from 'react-native';
 
 import jsonPlaceholder from '../apis/jsonPlaceholder';
-import PostComponent from '../components/PostComponent';
+import ListSectionsComponent from '../components/ListSectionsComponent';
 
-import { Post } from '../interfaces/postInterfaces';
+import { Post } from '../interfaces/rootInterfaces';
 
 const PostsScreen = () => {
     const [posts, setPosts] = useState<Post[]>([])
@@ -21,7 +21,7 @@ const PostsScreen = () => {
     // The posts are rendered in the child component PostComponent
     const helpRender = () => {
         if (posts.length !== 0) {
-            return <PostComponent posts={posts} />
+            return <ListSectionsComponent data={posts} titleOne={"Post title:  "} titleTwo={"Post body:"} type={"post"}/>
         }
         return <Text style={styles.loadingTextStyle}>Loading posts...</Text>
     }

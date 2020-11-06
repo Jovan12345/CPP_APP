@@ -1,8 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image } from 'react-native'
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import { photoData } from '../interfaces/rootInterfaces';
 
-export default function MapScreen({ route: { params } }) {
+
+export default function MapScreen({ route: { params } }: {route:{params: photoData }}) {
     const { uri, latitude, longitude } = params;
     return (
         <View style={{ flex: 1 }}>
@@ -19,7 +21,7 @@ export default function MapScreen({ route: { params } }) {
                         longitudeDelta: 0.0121,
                     }}
                 >
-                    <MapView.Marker
+                    <Marker
                         coordinate={{
                             latitude: latitude,
                             longitude: longitude
@@ -37,7 +39,7 @@ export default function MapScreen({ route: { params } }) {
                                 alignSelf: "center",
                             }} />
                         </View>
-                    </MapView.Marker>
+                    </Marker>
                 </MapView>
             </View>
 

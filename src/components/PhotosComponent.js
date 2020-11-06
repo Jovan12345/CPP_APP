@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, StyleSheet, Text, View, StatusBar, Image, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, StatusBar, Image, ScrollView } from 'react-native'
 
 const PhotosComponent = ({ photos, albums }) => {
 

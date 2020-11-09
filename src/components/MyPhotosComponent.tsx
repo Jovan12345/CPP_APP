@@ -19,6 +19,7 @@ type Props = {
 
 const MyPhotosComponent = ({ navigation }: Props) => {
     const [photo, setPhoto] = useState({})
+    console.log("Photo", photo)
     const myPhotos = useSelector((state: Photo) => state.photos);
     const photosCity = useSelector((state: PhotoAddress) => state.photoCity);
 

@@ -48,10 +48,10 @@ export default function ImageAddressComponent({ uri, latitude, longitude, photoA
                 style={styles.touchablePart}
                 onPress={findMapLocation}
             >
-                <Image style={styles.imageStyle} source={{ uri }} />
+                <Image style={styles.imageStyle} source={{ uri: 'data:image/jpeg;base64,' + uri }} />
                 <View style={styles.addressStyle}>
                     {photoAddress[index] ?
-                        <View>
+                        <View style={{flex: 1}}>
                             <Text>Location: {photoAddress[index].photoCity}</Text>
                         </View>
                         :

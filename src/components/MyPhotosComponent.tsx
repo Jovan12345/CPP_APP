@@ -53,14 +53,14 @@ const MyPhotosComponent = ({ navigation }: Props) => {
                     const latitude = res.latitude ? res.latitude : gps.coords.latitude;
                     const longitude = res.longitude ? res.longitude : gps.coords.longitude;
                     setPhoto({
-                        uri: res.uri,
+                        uri: res.data,
                         latitude: latitude,
                         longitude: longitude,
                         fileName: res.fileName
                     })
                 }, (err) => {
                     setPhoto({
-                        uri: res.uri,
+                        uri: res.data,
                         latitude: res.latitude,
                         longitude: res.longitude,
                         fileName: res.fileName
@@ -116,6 +116,10 @@ const styles = StyleSheet.create({
         fontSize: 20,
         alignSelf: 'center',
         marginTop: '50%'
+    },
+    textLocationStyle: {
+        flex: 1,
+        flexWrap: 'wrap'
     }
 })
 

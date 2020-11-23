@@ -4,7 +4,7 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { photoData } from '../interfaces/rootInterfaces';
 
 
-export default function MapScreen({ route: { params } }: {route:{params: photoData }}) {
+export default function MapScreen({ route: { params } }: { route: { params: photoData } }) {
     const { uri, latitude, longitude } = params;
     return (
         <View style={{ flex: 1 }}>
@@ -28,8 +28,8 @@ export default function MapScreen({ route: { params } }: {route:{params: photoDa
                         }}
                     >
                         {/* Two images are used, one to display the marker on the map, and second to display the photo that the user has choosen */}
-                        <View style={{flex:1}}>
-                            <Image source={{ uri }} style={{
+                        <View style={{ flex: 1 }}>
+                            <Image source={{ uri: 'data:image/jpeg;base64,' + uri }} style={{
                                 width: 100,
                                 height: 100,
                             }} />

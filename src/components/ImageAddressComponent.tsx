@@ -5,8 +5,6 @@ import { showMessage } from "react-native-flash-message";
 import { photosGeoLoc } from '../interfaces/rootInterfaces';
 import { NavigationStackProp } from 'react-navigation-stack';
 
-
-
 type Props = {
     uri: string;
     latitude: number;

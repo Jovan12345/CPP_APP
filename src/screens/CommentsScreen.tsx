@@ -13,7 +13,7 @@ const CommentsScreen = () => {
     useEffect(() => {
         jsonPlaceholder.get<Comment[]>('/comments', {
             params: {
-                _limit: 50
+                _limit: 10
             }
         }).then((res) => setComments(res.data)).catch(err => console.log('error', err))
     }, [])

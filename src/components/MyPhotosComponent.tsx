@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, AsyncStorage } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import { NavigationStackProp } from 'react-navigation-stack';
@@ -19,7 +19,6 @@ type Props = {
 
 const MyPhotosComponent = ({ navigation }: Props) => {
     const [photo, setPhoto] = useState({})
-    console.log("Photo", photo)
     const myPhotos = useSelector((state: Photo) => state.photos);
     const photosCity = useSelector((state: PhotoAddress) => state.photoCity);
 

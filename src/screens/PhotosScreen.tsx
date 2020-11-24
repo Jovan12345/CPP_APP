@@ -14,12 +14,12 @@ const PhotosScreen = () => {
     // and than a chained request to take the photos for the corresponding photos (using the albumId property)
     useEffect(() => {
         jsonPlaceholder.get<Album[]>('/albums', {
-            params: { _limit: 7 }
+            params: { _limit: 3 }
         }).then(res => {
             setAlbums(res.data)
             const albumsRes = res.data.map(async albumRes => {
                 return jsonPlaceholder.get<Photos[]>(`/albums/${albumRes.id}/photos`, {
-                    params: { _limit: 9 }
+                    params: { _limit: 6 }
                 })
 
             })

@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, StatusBar, Image, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, StatusBar, Image, ScrollView, SafeAreaView } from 'react-native'
 
 const PhotosComponent = ({ photos, albums }) => {
 
@@ -20,7 +20,7 @@ const PhotosComponent = ({ photos, albums }) => {
         <ScrollView style={{ flex: 1, marginTop: StatusBar.currentHeight || 0 }}>
             {sectionObj.map((item, index) => {
                 return (
-                    <View key={item.title + index} >
+                    <SafeAreaView key={item.title + index} >
                         <Text style={styles.albumTitle}>{item.title.replace(/\n/g, ' ')}</Text>
                         <ScrollView style={{ paddingVertical: 15, paddingHorizontal: 10 }}>
                             <View style={styles.albumStyle}>
@@ -42,7 +42,7 @@ const PhotosComponent = ({ photos, albums }) => {
                                 })}
                             </View>
                         </ScrollView>
-                    </View>
+                    </SafeAreaView>
                 )
             })}
         </ScrollView>

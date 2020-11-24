@@ -14,6 +14,12 @@ target 'CPP_APP' do
 
   pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
 
+  permissions_path = '../node_modules/react-native-permissions/ios'   # added from here https://github.com/zoontek/react-native-permissions/issues/449
+
+  pod 'Permission-Camera', :path => "../node_modules/react-native-permissions/ios/Camera.podspec"  # added from here https://github.com/zoontek/react-native-permissions/issues/449
+
+  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-async-storage/async-storage'
+
   target 'CPP_APPTests' do
     inherit! :complete
     # Pods for testing

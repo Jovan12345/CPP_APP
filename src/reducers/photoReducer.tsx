@@ -5,8 +5,8 @@ interface Message {
 }
 
 interface AddPhoto {
-  type: typeof ADD_PHOTO_ASYNC
-  payload: Message
+    type: typeof ADD_PHOTO_ASYNC
+    payload: Message
 }
 
 type AddPhotoAsync = AddPhoto
@@ -14,7 +14,9 @@ type AddPhotoAsync = AddPhoto
 export default (state = [], action: AddPhotoAsync) => {
     switch (action.type) {
         case 'ADD_PHOTO_ASYNC':
+
             return [...state, { photoData: action.payload }];
+        default:
+            return state;
     }
-    return state;
 };

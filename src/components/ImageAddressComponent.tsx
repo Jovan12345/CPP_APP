@@ -14,7 +14,7 @@ type Props = {
     navigation: NavigationStackProp;
 };
 
-export default function ImageAddressComponent({ uri, latitude, longitude, photoAddress, index, navigation } : Props) {
+export default function ImageAddressComponent({ uri, latitude, longitude, photoAddress, index, navigation }: Props) {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch({
@@ -23,7 +23,7 @@ export default function ImageAddressComponent({ uri, latitude, longitude, photoA
         });
     }, []);
 
-    const findMapLocation = () => { 
+    const findMapLocation = () => {
         if (latitude && longitude) {
             navigation.navigate('Map', {
                 uri: uri,
@@ -49,8 +49,8 @@ export default function ImageAddressComponent({ uri, latitude, longitude, photoA
                 <Image style={styles.imageStyle} source={{ uri: 'data:image/jpeg;base64,' + uri }} />
                 <View style={styles.addressStyle}>
                     {photoAddress[index] ?
-                        <View style={{flex: 1}}>
-                            <Text>Location: {photoAddress[index].photoCity}</Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.textStyle}>Location: {photoAddress[index].photoCity}</Text>
                         </View>
                         :
                         <Text>Location: Loading...</Text>}
@@ -78,7 +78,12 @@ const styles = StyleSheet.create({
         margin: 10
     },
     addressStyle: {
+        flex: 1,
         alignSelf: "center",
         paddingLeft: 10
+    },
+    textStyle: {
+        flex: 1,
+        flexWrap: 'wrap'
     }
 })

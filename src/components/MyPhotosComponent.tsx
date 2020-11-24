@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, AsyncStorage } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import { NavigationStackProp } from 'react-navigation-stack';
@@ -11,6 +11,7 @@ import Geolocation from '@react-native-community/geolocation';
 
 import ImageAddressComponent from './ImageAddressComponent'
 import { Photo, PhotoAddress, photoData } from '../interfaces/rootInterfaces';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 type Props = {
@@ -26,12 +27,52 @@ const MyPhotosComponent = ({ navigation }: Props) => {
 
     const photoData = myPhotos.map(photoDetails => photoDetails.photoData)
 
+    const storeData = async (value: string) => {
+        try {
+            await AsyncStorage.setItem('myPhotos', value)
+            console.log('Succesfully wrote image to AsyncStorage')
+        } catch (e) {
+            console.log('Async storage error: ', e)
+        }
+    }
+
+    const clearAppData = async function () {
+        try {
+            const keys = await AsyncStorage.getAllKeys();
+            await AsyncStorage.multiRemove(keys);
+            console.log('Should have removed Asynx Storage')
+        } catch (error) {
+            console.error('Error clearing app data.');
+        }
+    }
+
+    const getData = async () => {
+        try {
+            const value: any = await AsyncStorage.getItem('myPhotos')
+
+            JSON.parse(value).map((item: any) => {
+                if (item.photoData) {
+                    console.log(item.photoData)
+                }
+                // dispatch({ type: "ADD_PHOTO", payload: item.photoData })
+            })
+            console.log('Asynx storage data', JSON.parse(value))
+        } catch (e) {
+            // error reading value
+        }
+    }
+
     useEffect(() => {
         if (Object.keys(photo).length !== 0) {
 
             dispatch({ type: "ADD_PHOTO", payload: photo })
         }
     }, [photo])
+
+    useEffect(() => {
+        getData()
+    }, [])
+
 
     const chooseImg = () => {
         var options = {
@@ -48,6 +89,7 @@ const MyPhotosComponent = ({ navigation }: Props) => {
                 console.log('ImagePicker Error: ', res.error);
             } else {
                 // Geolocation is used as an alternative as the ImagePicker does not pick up the location every time
+                let jsonValue;
                 Geolocation.getCurrentPosition(gps => {
                     const latitude = res.latitude ? res.latitude : gps.coords.latitude;
                     const longitude = res.longitude ? res.longitude : gps.coords.longitude;
@@ -56,8 +98,25 @@ const MyPhotosComponent = ({ navigation }: Props) => {
                         latitude: latitude,
                         longitude: longitude,
                         fileName: res.fileName
-                    })
+                    });
+                    jsonValue = JSON.stringify({
+                        uri: res.data,
+                        latitude: latitude,
+                        longitude: longitude,
+                        fileName: res.fileName
+                    });
+                    console.log(myPhotos)
+                    // storeData(jsonValue);
+
                 }, (err) => {
+                    console.log('i am in the error block')
+                    jsonValue = JSON.stringify({
+                        uri: res.data,
+                        latitude: res.latitude,
+                        longitude: res.longitude,
+                        fileName: res.fileName
+                    })
+                    // storeData(jsonValue);
                     setPhoto({
                         uri: res.data,
                         latitude: res.latitude,
@@ -84,10 +143,12 @@ const MyPhotosComponent = ({ navigation }: Props) => {
             <FlatList
                 data={photoData}
                 renderItem={renderItemFunc}
-                keyExtractor={(item, index) => item.fileName + index}
+                keyExtractor={(item, index) => (item.fileName + index).toString()}
             />
             <TouchableOpacity style={styles.plusIcon} onPress={chooseImg}>
-                {photoData.length === 0 ? <Text style={{ paddingRight: 10 }}>Add photo</Text> : null}
+                {
+                    photoData.length === 0 ? <Text style={{ paddingRight: 10 }}>Add photo</Text> : null
+                }
                 <Icon
                     name="pluscircle"
                     size={50}

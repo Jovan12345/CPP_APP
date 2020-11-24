@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import { NavigationStackProp } from 'react-navigation-stack';
 
@@ -10,7 +10,7 @@ import FlashMessage from "react-native-flash-message";
 import Geolocation from '@react-native-community/geolocation';
 
 import ImageAddressComponent from './ImageAddressComponent'
-import { Photo, PhotoAddress, photoData } from '../interfaces/rootInterfaces';
+import { PhotoAddress } from '../interfaces/rootInterfaces';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -19,13 +19,8 @@ type Props = {
 };
 
 const MyPhotosComponent = ({ navigation }: Props) => {
-    const [photo, setPhoto] = useState({})
-    const myPhotos = useSelector((state: Photo) => state.photos);
+    const [photo, setPhoto] = useState([{}])
     const photosCity = useSelector((state: PhotoAddress) => state.photoCity);
-
-    const dispatch = useDispatch();
-
-    const photoData = myPhotos.map(photoDetails => photoDetails.photoData)
 
     const storeData = async (value: string) => {
         try {
@@ -49,30 +44,16 @@ const MyPhotosComponent = ({ navigation }: Props) => {
     const getData = async () => {
         try {
             const value: any = await AsyncStorage.getItem('myPhotos')
-
-            JSON.parse(value).map((item: any) => {
-                if (item.photoData) {
-                    console.log(item.photoData)
-                }
-                // dispatch({ type: "ADD_PHOTO", payload: item.photoData })
-            })
-            console.log('Asynx storage data', JSON.parse(value))
+            const asyncPhotos = JSON.parse(value);
+            setPhoto([...asyncPhotos])
         } catch (e) {
             // error reading value
         }
     }
 
     useEffect(() => {
-        if (Object.keys(photo).length !== 0) {
-
-            dispatch({ type: "ADD_PHOTO", payload: photo })
-        }
-    }, [photo])
-
-    useEffect(() => {
         getData()
     }, [])
-
 
     const chooseImg = () => {
         var options = {
@@ -88,66 +69,44 @@ const MyPhotosComponent = ({ navigation }: Props) => {
             } else if (res.error) {
                 console.log('ImagePicker Error: ', res.error);
             } else {
-                // Geolocation is used as an alternative as the ImagePicker does not pick up the location every time
-                let jsonValue;
-                Geolocation.getCurrentPosition(gps => {
-                    const latitude = res.latitude ? res.latitude : gps.coords.latitude;
-                    const longitude = res.longitude ? res.longitude : gps.coords.longitude;
-                    setPhoto({
-                        uri: res.data,
-                        latitude: latitude,
-                        longitude: longitude,
-                        fileName: res.fileName
-                    });
-                    jsonValue = JSON.stringify({
-                        uri: res.data,
-                        latitude: latitude,
-                        longitude: longitude,
-                        fileName: res.fileName
-                    });
-                    console.log(myPhotos)
-                    // storeData(jsonValue);
-
-                }, (err) => {
-                    console.log('i am in the error block')
-                    jsonValue = JSON.stringify({
-                        uri: res.data,
-                        latitude: res.latitude,
-                        longitude: res.longitude,
-                        fileName: res.fileName
-                    })
-                    // storeData(jsonValue);
-                    setPhoto({
-                        uri: res.data,
-                        latitude: res.latitude,
-                        longitude: res.longitude,
-                        fileName: res.fileName
-                    })
-                })
-
+                const jsonValue = JSON.stringify([...photo, {
+                    uri: res.data,
+                    latitude: res.latitude,
+                    longitude: res.longitude,
+                    fileName: res.fileName
+                }])
+                storeData(jsonValue);
+                setPhoto([...photo, {
+                    uri: res.data,
+                    latitude: res.latitude,
+                    longitude: res.longitude,
+                    fileName: res.fileName
+                }])
             }
         });
     };
 
+    const renderItemFunc = ({ item, index }: { item: any, index: number }) => {
+        if (item.uri) {
+            const { uri, latitude, longitude } = item;
 
-
-    const renderItemFunc = ({ item, index }: { item: photoData, index: number }) => {
-        const { uri, latitude, longitude } = item;
-
-        return <ImageAddressComponent uri={uri} latitude={latitude} longitude={longitude} photoAddress={photosCity} index={index} navigation={navigation} />
+            return <ImageAddressComponent uri={uri} latitude={latitude} longitude={longitude} photoAddress={photosCity} index={index} navigation={navigation} />
+        } else {
+            return null
+        }
     };
 
     return (
         <View style={styles.container}>
-            {photoData.length === 0 ? <Text style={styles.addPhotoTextStyle}>Add new photo ⇲</Text> : null}
+            {photo.length === 1 ? <Text style={styles.addPhotoTextStyle}>Add new photo ⇲</Text> : null}
             <FlatList
-                data={photoData}
+                data={photo}
                 renderItem={renderItemFunc}
-                keyExtractor={(item, index) => (item.fileName + index).toString()}
+                keyExtractor={(item: any, index) => (item.fileName + index).toString()}
             />
             <TouchableOpacity style={styles.plusIcon} onPress={chooseImg}>
                 {
-                    photoData.length === 0 ? <Text style={{ paddingRight: 10 }}>Add photo</Text> : null
+                    photo.length === 1 ? <Text style={{ paddingRight: 10 }}>Add photo</Text> : null
                 }
                 <Icon
                     name="pluscircle"
@@ -175,7 +134,7 @@ const styles = StyleSheet.create({
     addPhotoTextStyle: {
         fontSize: 20,
         alignSelf: 'center',
-        marginTop: '50%'
+        marginTop: '65%'
     },
     textLocationStyle: {
         flex: 1,

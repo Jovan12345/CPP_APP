@@ -1,2 +1,16 @@
 [1102/144541.995:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
 [1104/091109.756:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1125/151232.987:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1125/152233.005:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1125/152233.006:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\jovanj\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\0bb693f3-f9cb-4e11-abe3-32a0bc2ca7f5: The system cannot find the path specified. (0x3)
+[1125/152233.008:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\jovanj\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\59906a5c-cef2-4690-b8a0-d7fff0093f04: The system cannot find the path specified. (0x3)
+[1125/152233.008:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\jovanj\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\eb2b5e28-e5ad-4067-87b6-0233c2e5ac3e: The system cannot find the path specified. (0x3)
+[1125/152233.008:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1125/152233.009:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1125/152233.009:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1125/152732.989:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1125/154232.996:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1125/155733.000:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1125/161233.003:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1125/162733.006:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1125/164233.015:ERROR:crash_report_database_win.cc(457)] unexpected header

@@ -35,7 +35,6 @@ const MyPhotosComponent = ({ navigation }: Props) => {
         try {
             const keys = await AsyncStorage.getAllKeys();
             await AsyncStorage.multiRemove(keys);
-            console.log('Should have removed Asynx Storage')
         } catch (error) {
             console.error('Error clearing app data.');
         }
@@ -74,7 +73,6 @@ const MyPhotosComponent = ({ navigation }: Props) => {
             } else if (res.error) {
                 console.log('ImagePicker Error: ', res.error);
             } else {
-                console.log('Photo results', res)
                 let jsonValue = [{}];
                 // Geolocation is used as an alternative as the ImagePicker does not pick up the location every time
                 Geolocation.getCurrentPosition(gps => {
@@ -89,7 +87,6 @@ const MyPhotosComponent = ({ navigation }: Props) => {
                     }])
                     storeData(JSON.stringify(jsonValue));
                     setPhoto(jsonValue);
-                    console.log('Okay block')
                 }, e => {
                     jsonValue = ([...photo, {
                         uri: res.data,
@@ -99,7 +96,6 @@ const MyPhotosComponent = ({ navigation }: Props) => {
                     }])
                     storeData(JSON.stringify(jsonValue));
                     setPhoto(jsonValue)
-                    console.log('Error block')
 
                 })
             }
@@ -114,8 +110,6 @@ const MyPhotosComponent = ({ navigation }: Props) => {
             return null
         }
     };
-
-    console.log(loadingPhotos)
 
     return (
         <View style={{ flex: 1 }}>

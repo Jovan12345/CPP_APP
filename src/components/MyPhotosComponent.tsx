@@ -4,15 +4,13 @@ import { useSelector } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import { NavigationStackProp } from 'react-navigation-stack';
 
-
 import Icon from 'react-native-vector-icons/AntDesign';
 import FlashMessage from "react-native-flash-message";
-import Geolocation from '@react-native-community/geolocation';
 
 import ImageAddressComponent from './ImageAddressComponent'
 import { PhotoAddress } from '../interfaces/rootInterfaces';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import Geolocation from '@react-native-community/geolocation';
 
 type Props = {
     navigation: NavigationStackProp;
@@ -25,12 +23,12 @@ const MyPhotosComponent = ({ navigation }: Props) => {
     const storeData = async (value: string) => {
         try {
             await AsyncStorage.setItem('myPhotos', value)
-            console.log('Succesfully wrote image to AsyncStorage')
         } catch (e) {
-            console.log('Async storage error: ', e)
+            console.log('Error while storing in Async Storage: ', e)
         }
     }
 
+    // If the async storage needs to be cleared, just place the clearAppData() in the useEffect hook
     const clearAppData = async function () {
         try {
             const keys = await AsyncStorage.getAllKeys();
@@ -44,14 +42,18 @@ const MyPhotosComponent = ({ navigation }: Props) => {
     const getData = async () => {
         try {
             const value: any = await AsyncStorage.getItem('myPhotos')
-            const asyncPhotos = JSON.parse(value);
-            setPhoto([...asyncPhotos])
+            if (value) {
+                const asyncPhotos = JSON.parse(value);
+                setPhoto([...asyncPhotos])
+            }
         } catch (e) {
             // error reading value
+            console.log('Error while reading myPhotos data from Async Storage: ', e)
         }
     }
 
     useEffect(() => {
+        // clearAppData() // Enable only if you want to delete everything from the Async Storage
         getData()
     }, [])
 
@@ -69,19 +71,45 @@ const MyPhotosComponent = ({ navigation }: Props) => {
             } else if (res.error) {
                 console.log('ImagePicker Error: ', res.error);
             } else {
-                const jsonValue = JSON.stringify([...photo, {
-                    uri: res.data,
-                    latitude: res.latitude,
-                    longitude: res.longitude,
-                    fileName: res.fileName
-                }])
-                storeData(jsonValue);
-                setPhoto([...photo, {
-                    uri: res.data,
-                    latitude: res.latitude,
-                    longitude: res.longitude,
-                    fileName: res.fileName
-                }])
+                console.log('Photo results', res)
+                let jsonValue = [{}];
+                // Geolocation is used as an alternative as the ImagePicker does not pick up the location every time
+                Geolocation.getCurrentPosition(gps => {
+                    const latitude = res.latitude ? res.latitude : gps.coords.latitude;
+                    const longitude = res.longitude ? res.longitude : gps.coords.longitude;
+
+                    jsonValue = ([...photo, {
+                        uri: res.data,
+                        latitude,
+                        longitude,
+                        fileName: res.fileName
+                    }])
+                    storeData(JSON.stringify(jsonValue));
+                    setPhoto(jsonValue);
+                    console.log('Okay block')
+                }, e => {
+                    jsonValue = ([...photo, {
+                        uri: res.data,
+                        latitude: res.latitude,
+                        longitude: res.longitude,
+                        fileName: res.fileName
+                    }])
+                    storeData(JSON.stringify(jsonValue));
+                    setPhoto(jsonValue)
+                    console.log('Error block')
+
+                })
+
+
+
+                // jsonValue = ([...photo, {
+                //     uri: res.data,
+                //     latitude: res.latitude,
+                //     longitude: res.longitude,
+                //     fileName: res.fileName
+                // }])
+                // storeData(JSON.stringify(jsonValue));
+                // setPhoto(jsonValue)
             }
         });
     };
@@ -89,7 +117,6 @@ const MyPhotosComponent = ({ navigation }: Props) => {
     const renderItemFunc = ({ item, index }: { item: any, index: number }) => {
         if (item.uri) {
             const { uri, latitude, longitude } = item;
-
             return <ImageAddressComponent uri={uri} latitude={latitude} longitude={longitude} photoAddress={photosCity} index={index} navigation={navigation} />
         } else {
             return null
@@ -97,7 +124,7 @@ const MyPhotosComponent = ({ navigation }: Props) => {
     };
 
     return (
-        <View style={styles.container}>
+        <View style={{ flex: 1 }}>
             {photo.length === 1 ? <Text style={styles.addPhotoTextStyle}>Add new photo ⇲</Text> : null}
             <FlatList
                 data={photo}
@@ -120,9 +147,6 @@ const MyPhotosComponent = ({ navigation }: Props) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
     plusIcon: {
         position: 'absolute',
         bottom: 15,

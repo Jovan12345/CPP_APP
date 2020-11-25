@@ -4,15 +4,14 @@ import { StyleSheet, Text, View, StatusBar, Image, ScrollView, SafeAreaView } fr
 const PhotosComponent = ({ photos, albums }) => {
 
     // Function is created to take out the album titles from the list of albums
-    const findTitle = (searchId) => {
+    const findTitle = searchId => {
         let findserach = albums.find(idx => idx.id === searchId);
         return findserach.title
     }
 
     // Function is created to make an object with {title: 'album title', data: ['photos']}, which is than used to iterate though and show the photos
     const sectionObj = photos.map(value => {
-        let newObj = {};
-        newObj = { 'title': findTitle(value.data[0].albumId), 'data': value.data }
+        let newObj = { 'title': findTitle(value.data[0].albumId), 'data': value.data }
         return newObj;
     })
 

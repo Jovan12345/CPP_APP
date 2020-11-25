@@ -12,7 +12,6 @@ export default function MapScreen({ route: { params } }: { route: { params: phot
             <View style={styles.container}>
                 {/* Google maps are used to enable the user to find out where is the location of the photo */}
                 <MapView
-                    provider={PROVIDER_GOOGLE}
                     style={styles.map}
                     initialRegion={{
                         latitude: latitude,

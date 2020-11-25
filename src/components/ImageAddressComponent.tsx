@@ -48,9 +48,9 @@ export default function ImageAddressComponent({ uri, latitude, longitude, photoA
             >
                 <Image style={styles.imageStyle} source={{ uri: 'data:image/jpeg;base64,' + uri }} />
                 <View style={styles.addressStyle}>
-                    {photoAddress[index] ?
+                    {photoAddress[index - 1] ?
                         <View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.textStyle}>Location: {photoAddress[index].photoCity}</Text>
+                            <Text style={styles.textStyle}>Location: {photoAddress[index - 1].photoCity}</Text>
                         </View>
                         :
                         <Text>Location: Loading...</Text>}

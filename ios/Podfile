@@ -8,7 +8,6 @@ target 'CPP_APP' do
 
   use_react_native!(:path => config["reactNativePath"])
 
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
@@ -19,6 +18,7 @@ target 'CPP_APP' do
   pod 'Permission-Camera', :path => "../node_modules/react-native-permissions/ios/Camera.podspec"  # added from here https://github.com/zoontek/react-native-permissions/issues/449
 
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-async-storage/async-storage'
+
 
   target 'CPP_APPTests' do
     inherit! :complete

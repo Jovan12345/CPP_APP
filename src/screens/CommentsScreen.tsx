@@ -15,7 +15,11 @@ const CommentsScreen = () => {
             params: {
                 _limit: 10
             }
-        }).then((res) => setComments(res.data)).catch(err => console.log('error', err))
+        }).then(res => {
+            setComments(res.data)
+        })
+            .catch(err => console.log('error', err)
+        )
     }, [])
 
     // The comments are rendered in the child component CommentComponent

@@ -28,7 +28,7 @@ const PhotosScreen = () => {
         })
     }, [])
 
-    // The albums title and the actual photos for the albums are rendered in he Photos Component
+    // The albums title and the actual photos for the albums are rendered in the PhotosComponent
     const helpRender = () => {
         if (photos.length !== 0 && albums.length !== 0) {
             return <PhotosComponent photos={photos} albums={albums} />

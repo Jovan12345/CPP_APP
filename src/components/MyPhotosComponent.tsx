@@ -11,6 +11,7 @@ import ImageAddressComponent from './ImageAddressComponent'
 import { PhotoAddress } from '../interfaces/rootInterfaces';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Geolocation from '@react-native-community/geolocation';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 type Props = {
     navigation: NavigationStackProp;
@@ -18,6 +19,7 @@ type Props = {
 
 const MyPhotosComponent = ({ navigation }: Props) => {
     const [photo, setPhoto] = useState([{}])
+    const [loadingPhotos, setLoadingPhotos] = useState(true)
     const photosCity = useSelector((state: PhotoAddress) => state.photoCity);
 
     const storeData = async (value: string) => {
@@ -46,6 +48,7 @@ const MyPhotosComponent = ({ navigation }: Props) => {
                 const asyncPhotos = JSON.parse(value);
                 setPhoto([...asyncPhotos])
             }
+            setLoadingPhotos(false)
         } catch (e) {
             // error reading value
             console.log('Error while reading myPhotos data from Async Storage: ', e)
@@ -99,17 +102,6 @@ const MyPhotosComponent = ({ navigation }: Props) => {
                     console.log('Error block')
 
                 })
-
-
-
-                // jsonValue = ([...photo, {
-                //     uri: res.data,
-                //     latitude: res.latitude,
-                //     longitude: res.longitude,
-                //     fileName: res.fileName
-                // }])
-                // storeData(JSON.stringify(jsonValue));
-                // setPhoto(jsonValue)
             }
         });
     };
@@ -123,25 +115,31 @@ const MyPhotosComponent = ({ navigation }: Props) => {
         }
     };
 
+    console.log(loadingPhotos)
+
     return (
         <View style={{ flex: 1 }}>
-            {photo.length === 1 ? <Text style={styles.addPhotoTextStyle}>Add new photo ⇲</Text> : null}
-            <FlatList
-                data={photo}
-                renderItem={renderItemFunc}
-                keyExtractor={(item: any, index) => (item.fileName + index).toString()}
-            />
-            <TouchableOpacity style={styles.plusIcon} onPress={chooseImg}>
-                {
-                    photo.length === 1 ? <Text style={{ paddingRight: 10 }}>Add photo</Text> : null
-                }
-                <Icon
-                    name="pluscircle"
-                    size={50}
-                    color="#009688"
-                />
-            </TouchableOpacity>
-            <FlashMessage position="bottom" />
+            {loadingPhotos ? <Spinner visible={loadingPhotos} textContent={'Loading...'}/> :
+                <>
+                    {photo.length === 1 ? <Text style={styles.addPhotoTextStyle}>Add new photo ⇲</Text> : null}
+                    <FlatList
+                        data={photo}
+                        renderItem={renderItemFunc}
+                        keyExtractor={(item: any, index) => (item.fileName + index).toString()}
+                    />
+                    <TouchableOpacity style={styles.plusIcon} onPress={chooseImg}>
+                        {
+                            photo.length === 1 ? <Text style={{ paddingRight: 10 }}>Add photo</Text> : null
+                        }
+                        <Icon
+                            name="pluscircle"
+                            size={50}
+                            color="#009688"
+                        />
+                    </TouchableOpacity>
+                    <FlashMessage position="bottom" />
+                </>
+            }
         </View>
     )
 }
@@ -163,6 +161,10 @@ const styles = StyleSheet.create({
     textLocationStyle: {
         flex: 1,
         flexWrap: 'wrap'
+    },
+    spinnerStyle: {
+        alignSelf: 'center',
+        marginTop: '65%'
     }
 })
 

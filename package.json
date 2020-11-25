@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.13.2",
@@ -31,6 +32,7 @@
     "react-native-flash-message": "^0.1.16",
     "react-native-gesture-handler": "^1.8.0",
     "react-native-image-picker": "^2.3.4",
+    "react-native-loading-spinner-overlay": "^2.0.0",
     "react-native-maps": "git+https://github.com/xDemon200/react-native-maps.git",
     "react-native-paper": "^4.2.0",
     "react-native-permissions": "^2.2.2",
@@ -52,6 +54,7 @@
     "@react-native-community/eslint-config": "^1.1.0",
     "@types/jest": "^25.2.3",
     "@types/react-native": "^0.63.2",
+    "@types/react-native-loading-spinner-overlay": "^0.5.2",
     "@types/react-test-renderer": "^16.9.2",
     "@typescript-eslint/eslint-plugin": "^2.27.0",
     "@typescript-eslint/parser": "^2.27.0",
@@ -60,6 +63,7 @@
     "jest": "^25.1.0",
     "jetifier": "^1.6.6",
     "metro-react-native-babel-preset": "^0.59.0",
+    "patch-package": "^6.2.2",
     "react-test-renderer": "16.13.1",
     "typescript": "^3.8.3"
   },
